@@ -2,6 +2,7 @@
 
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
+import CredentialTicker from "@/components/CredentialTicker";
 import Approach from "@/components/Approach";
 import Services from "@/components/Services";
 import About from "@/components/About";
@@ -14,6 +15,7 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
+        <CredentialTicker />
         <Approach />
         <Services />
         <About />

@@ -4,60 +4,67 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 
 const navLinks = [
-  { label: "Approach", href: "#approach" },
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Approach", href: "#approach", id: "approach" },
+  { label: "Services", href: "#services", id: "services" },
+  { label: "About", href: "#about", id: "about" },
+  { label: "Contact", href: "#contact", id: "contact" },
 ];
 
 const menuVariants = {
-  hidden: { opacity: 0, y: -16 },
+  hidden: { opacity: 0, y: -20 },
   visible: {
-    opacity: 1,
-    y: 0,
+    opacity: 1, y: 0,
     transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
   },
   exit: {
-    opacity: 0,
-    y: -12,
-    transition: { duration: 0.3, ease: "easeIn" as const },
+    opacity: 0, y: -16,
+    transition: { duration: 0.32, ease: "easeIn" as const },
   },
 };
 
 const mobileLinkVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      delay: i * 0.08,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { scrollY } = useScroll();
 
+  // Scroll detection for glassmorphism
   useEffect(() => {
-    const unsubscribe = scrollY.on("change", (y) => {
-      setScrolled(y > 48);
-    });
-    return unsubscribe;
+    const unsub = scrollY.on("change", (y) => setScrolled(y > 48));
+    return unsub;
   }, [scrollY]);
 
+  // Active section tracking
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    const ids = navLinks.map((l) => l.id);
+    const observers: IntersectionObserver[] = [];
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        { threshold: 0.35, rootMargin: "-80px 0px -40% 0px" }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  // Body scroll lock for mobile menu
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
   const handleNavClick = (href: string) => {
@@ -65,7 +72,7 @@ export default function Navigation() {
     setTimeout(() => {
       const el = document.querySelector(href);
       if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 320);
+    }, menuOpen ? 340 : 0);
   };
 
   return (
@@ -73,43 +80,33 @@ export default function Navigation() {
       <motion.header
         className="fixed top-0 left-0 right-0 z-50"
         style={{
-          backdropFilter: scrolled ? "blur(24px) saturate(180%)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(24px) saturate(180%)" : "none",
+          backdropFilter: scrolled ? "blur(28px) saturate(200%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(28px) saturate(200%)" : "none",
           background: scrolled ? "rgba(249, 248, 246, 0.88)" : "transparent",
           borderBottom: scrolled
-            ? "1px solid rgba(141, 170, 145, 0.18)"
+            ? "1px solid rgba(141, 170, 145, 0.15)"
             : "1px solid transparent",
-          boxShadow: scrolled ? "0 2px 24px rgba(45, 52, 54, 0.04)" : "none",
-          transition:
-            "background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease",
+          boxShadow: scrolled ? "0 1px 32px rgba(45, 52, 54, 0.05)" : "none",
+          transition: "background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, backdrop-filter 0.5s ease",
         }}
       >
         <nav className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between">
+
           {/* Logo */}
           <a
             href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             className="flex flex-col leading-none group"
           >
             <span
-              className="text-lg tracking-tight transition-opacity duration-300 group-hover:opacity-75"
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                color: "var(--jj-charcoal)",
-              }}
+              className="text-[1.1rem] tracking-tight transition-opacity duration-300 group-hover:opacity-70"
+              style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)" }}
             >
               Jennifer Jordan
             </span>
             <span
-              className="text-[0.58rem] tracking-[0.28em] uppercase mt-0.5"
-              style={{
-                color: "var(--jj-sage)",
-                fontFamily: "var(--font-inter), sans-serif",
-                fontWeight: 500,
-              }}
+              className="text-[0.56rem] tracking-[0.3em] uppercase mt-[3px]"
+              style={{ color: "var(--jj-gold)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}
             >
               PMHNP-BC
             </span>
@@ -121,11 +118,8 @@ export default function Navigation() {
               <a
                 key={link.label}
                 href={link.href}
-                className="nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href);
-                }}
+                className={`nav-link ${activeSection === link.id ? "active" : ""}`}
+                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
               >
                 {link.label}
               </a>
@@ -136,10 +130,7 @@ export default function Navigation() {
           <a
             href="#contact"
             className="book-btn hidden md:inline-flex"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("#contact");
-            }}
+            onClick={(e) => { e.preventDefault(); handleNavClick("#contact"); }}
           >
             <span>Book Consultation</span>
           </a>
@@ -147,32 +138,32 @@ export default function Navigation() {
           {/* Mobile Hamburger */}
           <button
             className="md:hidden flex flex-col gap-[5px] p-2 -mr-2"
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() => setMenuOpen((p) => !p)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
             <motion.span
-              className="block h-[1px] w-6 origin-center"
+              className="block h-[1px] w-[22px] origin-center"
               style={{ backgroundColor: "var(--jj-charcoal)" }}
               animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
             />
             <motion.span
-              className="block h-[1px] w-6 origin-center"
+              className="block h-[1px] w-[22px] origin-center"
               style={{ backgroundColor: "var(--jj-charcoal)" }}
               animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.2 }}
             />
             <motion.span
-              className="block h-[1px] w-6 origin-center"
+              className="block h-[1px] w-[22px] origin-center"
               style={{ backgroundColor: "var(--jj-charcoal)" }}
               animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
             />
           </button>
         </nav>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -183,35 +174,21 @@ export default function Navigation() {
             animate="visible"
             exit="exit"
           >
-            {/* Logo in menu */}
             <div className="absolute top-5 left-6">
               <span
-                className="text-lg tracking-tight"
-                style={{
-                  fontFamily: "var(--font-playfair), Georgia, serif",
-                  color: "var(--jj-charcoal)",
-                }}
+                className="text-[1.05rem] tracking-tight"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)" }}
               >
                 Jennifer Jordan
               </span>
             </div>
-
-            {/* Close */}
-            <button
-              className="absolute top-6 right-6"
-              onClick={() => setMenuOpen(false)}
-              aria-label="Close menu"
-            >
-              <span
-                className="text-[0.65rem] tracking-[0.2em] uppercase"
-                style={{ color: "var(--jj-stone)" }}
-              >
+            <button className="absolute top-6 right-6" onClick={() => setMenuOpen(false)} aria-label="Close menu">
+              <span className="text-[0.62rem] tracking-[0.22em] uppercase" style={{ color: "var(--jj-stone)" }}>
                 Close
               </span>
             </button>
 
-            {/* Mobile Nav Links */}
-            <div className="flex flex-col items-center gap-8">
+            <div className="flex flex-col items-center gap-7">
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.label}
@@ -220,41 +197,30 @@ export default function Navigation() {
                   variants={mobileLinkVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-4xl tracking-tight transition-opacity duration-300 hover:opacity-60"
-                  style={{
-                    fontFamily: "var(--font-playfair), Georgia, serif",
-                    color: "var(--jj-charcoal)",
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(link.href);
-                  }}
+                  className="text-[2.6rem] tracking-tight transition-opacity duration-300 hover:opacity-50"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)", fontStyle: "italic" }}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 >
                   {link.label}
                 </motion.a>
               ))}
             </div>
 
-            {/* Mobile CTA */}
             <motion.a
               href="#contact"
-              className="book-btn mt-4"
+              className="book-btn mt-2"
               custom={navLinks.length}
               variants={mobileLinkVariants}
               initial="hidden"
               animate="visible"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick("#contact");
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick("#contact"); }}
             >
               <span>Book Consultation</span>
             </motion.a>
 
-            {/* Sage accent */}
             <div
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 w-12 h-[1px]"
-              style={{ background: "var(--jj-sage-border)" }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 w-10 h-[1px]"
+              style={{ background: "var(--jj-gold)", opacity: 0.4 }}
             />
           </motion.div>
         )}
