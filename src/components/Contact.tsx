@@ -5,11 +5,11 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1, y: 0,
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
@@ -29,7 +29,6 @@ const services = [
   "Not sure — I'd like guidance",
 ];
 
-// Floating label input component
 function FloatingInput({
   id, name, type = "text", value, required, onChange,
 }: {
@@ -46,13 +45,13 @@ function FloatingInput({
     <div className="jj-input-group">
       <label
         htmlFor={id}
-        className={`jj-floating-label ${floated ? "floating" : ""} ${focused ? "active" : ""}`}
+        className={`jj-floating-label light ${floated ? "floating" : ""}`}
       >
-        {labelText[name]}{required && !floated ? "" : ""}
+        {labelText[name]}
       </label>
       <input
         id={id} name={name} type={type} required={required}
-        className="jj-input" value={value} onChange={onChange}
+        className="jj-input light" value={value} onChange={onChange}
         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
         autoComplete="off"
       />
@@ -73,13 +72,13 @@ function FloatingTextarea({
     <div className="jj-input-group">
       <label
         htmlFor={id}
-        className={`jj-floating-label ${floated ? "floating" : ""} ${focused ? "active" : ""}`}
+        className={`jj-floating-label light ${floated ? "floating" : ""}`}
       >
-        Tell Us About Yourself{required ? "" : ""}
+        Tell Us About Yourself
       </label>
       <textarea
         id={id} name={name} required={required} rows={5}
-        className="jj-textarea" value={value} onChange={onChange}
+        className="jj-textarea light" value={value} onChange={onChange}
         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
       />
     </div>
@@ -106,19 +105,36 @@ export default function Contact() {
       ref={ref}
       id="contact"
       className="relative py-24 md:py-36 overflow-hidden"
-      style={{ background: "var(--jj-alabaster)" }}
+      style={{ background: "var(--jj-charcoal)" }}
     >
       {/* Ambient gradients */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 12% 55%, rgba(141,170,145,0.07) 0%, transparent 52%), radial-gradient(ellipse at 88% 25%, rgba(196,164,107,0.05) 0%, transparent 50%)",
+            "radial-gradient(ellipse at 10% 60%, rgba(141,170,145,0.07) 0%, transparent 52%), radial-gradient(ellipse at 90% 20%, rgba(196,164,107,0.05) 0%, transparent 50%)",
         }}
       />
 
+      {/* Ghost type */}
+      <div
+        className="absolute right-0 bottom-0 select-none pointer-events-none overflow-hidden"
+        style={{
+          fontFamily: "var(--font-playfair), Georgia, serif",
+          fontSize: "clamp(14rem, 22vw, 24rem)",
+          lineHeight: 0.85,
+          color: "transparent",
+          WebkitTextStroke: "1px rgba(249,248,246,0.03)",
+          letterSpacing: "-0.06em",
+          transform: "translateX(20%)",
+          zIndex: 0,
+        }}
+      >
+        JJ
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-16 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-16 lg:gap-24">
 
           {/* ── Left: Info ── */}
           <motion.div
@@ -127,7 +143,7 @@ export default function Contact() {
             animate={isInView ? "visible" : "hidden"}
             className="flex flex-col justify-center"
           >
-            <motion.div variants={fadeUp} className="section-label mb-8">
+            <motion.div variants={fadeUp} className="section-label section-label-light mb-8">
               Get in Touch
             </motion.div>
 
@@ -136,7 +152,7 @@ export default function Contact() {
               className="leading-[1.12] tracking-[-0.022em] mb-7"
               style={{
                 fontFamily: "var(--font-playfair), Georgia, serif",
-                color: "var(--jj-charcoal)",
+                color: "var(--jj-alabaster)",
                 fontSize: "clamp(1.9rem, 3.2vw, 2.8rem)",
               }}
             >
@@ -147,7 +163,7 @@ export default function Contact() {
             <motion.p
               variants={fadeUp}
               className="text-[0.95rem] leading-[1.85] mb-10"
-              style={{ color: "var(--jj-stone)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
+              style={{ color: "rgba(249,248,246,0.5)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
             >
               Whether you&apos;re seeking a first evaluation or refining an existing
               care plan, we welcome you. Share a little about yourself and
@@ -157,25 +173,25 @@ export default function Contact() {
             {/* Info points */}
             <motion.div variants={fadeUp} className="flex flex-col gap-5 mb-10">
               {[
-                { label: "Response Time", value: "Within 1 business day" },
-                { label: "Location", value: "Northern Virginia" },
-                { label: "Telehealth", value: "Available statewide (VA)" },
-              ].map((item, i) => (
+                { label: "Response Time", value: "Within 1 business day", gold: false },
+                { label: "Location", value: "Northern Virginia", gold: true },
+                { label: "Telehealth", value: "Available statewide (VA)", gold: false },
+              ].map((item) => (
                 <div key={item.label} className="flex items-start gap-4">
                   <div
                     className="w-4 h-[1px] flex-shrink-0 mt-[0.65rem]"
-                    style={{ background: i === 1 ? "var(--jj-gold)" : "var(--jj-sage)" }}
+                    style={{ background: item.gold ? "var(--jj-gold)" : "var(--jj-sage)" }}
                   />
                   <div>
                     <p
-                      className="text-[0.6rem] tracking-[0.2em] uppercase mb-0.5"
-                      style={{ color: i === 1 ? "var(--jj-gold)" : "var(--jj-sage)" }}
+                      className="text-[0.58rem] tracking-[0.2em] uppercase mb-0.5"
+                      style={{ color: item.gold ? "var(--jj-gold)" : "var(--jj-sage)" }}
                     >
                       {item.label}
                     </p>
                     <p
                       className="text-[0.9rem]"
-                      style={{ color: "var(--jj-charcoal)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 400 }}
+                      style={{ color: "rgba(249,248,246,0.75)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 400 }}
                     >
                       {item.value}
                     </p>
@@ -189,26 +205,26 @@ export default function Contact() {
               variants={fadeUp}
               className="p-6"
               style={{
-                background: "var(--jj-cream)",
-                border: "1px solid rgba(196,164,107,0.2)",
+                background: "rgba(249,248,246,0.05)",
+                border: "1px solid rgba(196,164,107,0.15)",
                 borderLeft: "2px solid var(--jj-gold)",
               }}
             >
               <p
-                className="text-[0.6rem] tracking-[0.22em] uppercase mb-2"
+                className="text-[0.58rem] tracking-[0.22em] uppercase mb-2"
                 style={{ color: "var(--jj-gold)" }}
               >
                 Existing Patients
               </p>
               <p
                 className="text-[0.87rem] leading-relaxed mb-4"
-                style={{ color: "var(--jj-stone)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
+                style={{ color: "rgba(249,248,246,0.4)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
               >
                 Secure access to your records, messaging, and appointments is
                 coming soon through our integrated patient portal.
               </p>
               <span className="portal-btn inline-flex">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{ opacity: 0.6 }}>
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{ opacity: 0.5 }}>
                   <rect x="0.5" y="3" width="12" height="9.5" rx="1" stroke="currentColor" strokeWidth="1" />
                   <path d="M4 3V2a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" strokeWidth="1" />
                 </svg>
@@ -232,55 +248,52 @@ export default function Contact() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-8"
                 >
-                  {/* Row 1 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <FloatingInput id="name" name="name" value={form.name} required onChange={handleChange} />
                     <FloatingInput id="email" name="email" type="email" value={form.email} required onChange={handleChange} />
                   </div>
 
-                  {/* Row 2 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <FloatingInput id="phone" name="phone" type="tel" value={form.phone} onChange={handleChange} />
 
-                    {/* Service select */}
                     <div className="jj-input-group">
                       <label
                         htmlFor="service"
-                        className={`jj-floating-label ${form.service ? "floating" : ""}`}
-                        style={{ color: form.service ? "var(--jj-sage)" : undefined }}
+                        className={`jj-floating-label light ${form.service ? "floating" : ""}`}
                       >
                         Area of Interest
                       </label>
                       <select
                         id="service" name="service"
-                        className="jj-input"
+                        className="jj-input light"
                         value={form.service}
                         onChange={handleChange}
-                        style={{ color: form.service ? "var(--jj-charcoal)" : "transparent" }}
+                        style={{
+                          color: form.service ? "var(--jj-alabaster)" : "transparent",
+                          background: "transparent",
+                        }}
                       >
-                        <option value="" disabled />
+                        <option value="" disabled style={{ background: "var(--jj-charcoal)" }} />
                         {services.map((s) => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s} style={{ background: "var(--jj-charcoal)", color: "var(--jj-alabaster)" }}>{s}</option>
                         ))}
                       </select>
                     </div>
                   </div>
 
-                  {/* Message */}
                   <FloatingTextarea id="message" name="message" value={form.message} required onChange={handleChange} />
 
-                  {/* Disclaimer */}
                   <p
                     className="text-[0.78rem] leading-relaxed"
-                    style={{ color: "var(--jj-stone)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300, opacity: 0.7 }}
+                    style={{ color: "rgba(249,248,246,0.28)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
                   >
                     This form is not a crisis line. If you are experiencing a psychiatric
-                    emergency, please call <strong style={{ fontWeight: 500 }}>988</strong> or go to your nearest emergency room.
+                    emergency, please call <strong style={{ fontWeight: 500, color: "rgba(249,248,246,0.5)" }}>988</strong> or go to your nearest emergency room.
                   </p>
 
                   <motion.button
                     type="submit"
-                    className="cta-primary self-start"
+                    className="cta-on-dark self-start"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -297,7 +310,6 @@ export default function Contact() {
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className="flex flex-col items-start justify-center min-h-[440px] gap-6"
                 >
-                  {/* Check circle */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -322,7 +334,7 @@ export default function Contact() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4, duration: 0.6 }}
                       className="text-2xl mb-3"
-                      style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)" }}
+                      style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-alabaster)" }}
                     >
                       Thank you, {form.name.split(" ")[0]}.
                     </motion.h3>
@@ -331,7 +343,7 @@ export default function Contact() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.55, duration: 0.6 }}
                       className="text-[0.95rem] leading-relaxed max-w-sm"
-                      style={{ color: "var(--jj-stone)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
+                      style={{ color: "rgba(249,248,246,0.5)", fontFamily: "var(--font-inter), sans-serif", fontWeight: 300 }}
                     >
                       Your message has been received. We&apos;ll be in touch within
                       one business day to schedule your consultation.
@@ -347,9 +359,10 @@ export default function Contact() {
 
                   <button
                     onClick={() => { setSubmitted(false); setForm(initialForm); }}
-                    className="cta-secondary"
+                    className="cta-text-light"
+                    style={{ cursor: "pointer" }}
                   >
-                    <span>Send Another Message</span>
+                    Send Another Message
                   </button>
                 </motion.div>
               )}
