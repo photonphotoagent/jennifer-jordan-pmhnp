@@ -60,7 +60,7 @@ export default function LoadScreen({ onComplete }: { onComplete: () => void }) {
           style={{ gap: "0.42em" }}
         >
           {["Jennifer", "Jordan"].map((word, i) => (
-            <div key={word} style={{ overflow: "hidden" }}>
+            <div key={word} style={{ overflow: "hidden", paddingBottom: "0.05em", marginBottom: "-0.05em" }}>
               <motion.span
                 style={{
                   display: "block",

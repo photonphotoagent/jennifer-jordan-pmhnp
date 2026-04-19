@@ -63,15 +63,15 @@ export default function Approach() {
 
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 pt-24 md:pt-36 pb-0">
 
-        {/* Label — centered */}
-        <motion.div
+        {/* Label — centered, semantic h2 for SEO */}
+        <motion.h2
           initial={{ opacity: 0, y: 14 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="section-label justify-center mb-14"
         >
           The Approach
-        </motion.div>
+        </motion.h2>
 
         {/* Giant pull quote — centered */}
         <motion.div

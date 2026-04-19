@@ -95,12 +95,12 @@ export default function Hero() {
             fontFamily: "var(--font-playfair), Georgia, serif",
             fontSize: "clamp(4.2rem, 8.8vw, 9.5rem)",
             letterSpacing: "-0.035em",
-            lineHeight: 0.95,
+            lineHeight: 1.05,
             color: "var(--jj-alabaster)",
           }}
         >
           {lines.map(({ node, delay }, i) => (
-            <div key={i} style={{ overflow: "hidden" }}>
+            <div key={i} style={{ overflow: "hidden", paddingBottom: "0.06em", marginBottom: "-0.06em" }}>
               <motion.div
                 style={{ display: "block" }}
                 initial={{ y: "110%" }}
