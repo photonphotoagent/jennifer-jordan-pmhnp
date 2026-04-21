@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 
@@ -90,7 +91,15 @@ export default function About() {
           >
             {/* Portrait frame with animated SVG border */}
             <div className="relative w-full aspect-[3/4]" style={{ borderRadius: "2px" }}>
-              <div className="absolute inset-0 texture-portrait" style={{ borderRadius: "2px" }} />
+              <Image
+                src="/jennifer-jordan.jpg"
+                alt="Jennifer Jordan, PMHNP-BC — Board-Certified Psychiatric Nurse Practitioner in Northern Virginia"
+                fill
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                priority
+                className="object-cover object-top"
+                style={{ borderRadius: "2px" }}
+              />
 
               {/* Animated SVG border */}
               <svg
