@@ -207,7 +207,7 @@ export default function Hero() {
             { val: "PMHNP-BC", label: "Board Certified", serif: false, color: "var(--jj-sage)" },
             { val: "Georgetown", label: "University Alumna", serif: false, color: "rgba(249,248,246,0.65)" },
           ].map((s, i) => (
-            <div key={i} className="flex flex-col gap-1">
+            <div key={i} className="stat-item flex flex-col gap-1 cursor-default">
               <span
                 style={{
                   fontFamily: s.serif ? "var(--font-playfair), Georgia, serif" : "var(--font-inter), sans-serif",

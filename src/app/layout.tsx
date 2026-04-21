@@ -325,6 +325,7 @@ export default function RootLayout({
         className={`${playfair.variable} ${inter.variable} antialiased`}
       >
         {children}
+        <div className="grain-overlay" aria-hidden="true" />
       </body>
     </html>
   );

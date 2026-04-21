@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function LoadScreen({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
-    const timer = setTimeout(onComplete, 2700);
+    const timer = setTimeout(onComplete, 1900);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
@@ -135,7 +135,7 @@ export default function LoadScreen({ onComplete }: { onComplete: () => void }) {
           }}
           initial={{ width: "0%" }}
           animate={{ width: "100%" }}
-          transition={{ duration: 2.1, delay: 0.55, ease: [0.16, 1, 0.3, 1] as const }}
+          transition={{ duration: 1.4, delay: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
         />
       </div>
 

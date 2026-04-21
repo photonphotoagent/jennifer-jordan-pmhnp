@@ -91,15 +91,25 @@ export default function About() {
           >
             {/* Portrait frame with animated SVG border */}
             <div className="relative w-full aspect-[3/4]" style={{ borderRadius: "2px" }}>
-              <Image
-                src="/jennifer-jordan.jpg"
-                alt="Jennifer Jordan, PMHNP-BC — Board-Certified Psychiatric Nurse Practitioner in Northern Virginia"
-                fill
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                priority
-                className="object-cover object-top"
-                style={{ borderRadius: "2px" }}
-              />
+              <motion.div
+                className="absolute inset-0 z-0"
+                initial={{ scale: 1.12, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                transition={{ duration: 1.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Image
+                  src="/jennifer-jordan.jpg"
+                  alt="Jennifer Jordan, PMHNP-BC — Board-Certified Psychiatric Nurse Practitioner in Northern Virginia"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  priority
+                  className="object-cover object-top"
+                  style={{ borderRadius: "2px" }}
+                />
+              </motion.div>
+
+              {/* Editorial vignette */}
+              <div className="portrait-vignette" />
 
               {/* Animated SVG border */}
               <svg
@@ -167,7 +177,7 @@ export default function About() {
               {stats.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className="flex flex-col items-center py-5"
+                  className="stat-item flex flex-col items-center py-5 cursor-default"
                   style={{ background: "var(--jj-cream)" }}
                 >
                   <span

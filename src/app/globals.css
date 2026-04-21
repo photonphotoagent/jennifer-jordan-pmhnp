@@ -343,6 +343,75 @@ body {
   gap: 2.5rem;
 }
 
+/* ── MOBILE BOOK BUTTON (on dark bg) ── */
+.book-btn-mobile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.6rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jj-alabaster);
+  overflow: hidden;
+  transition: color 0.45s ease;
+  white-space: nowrap;
+}
+.book-btn-mobile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(141,170,145,0.45);
+  transition: border-color 0.45s ease;
+  pointer-events: none;
+}
+.book-btn-mobile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--jj-sage);
+  transform: translateY(101%);
+  transition: transform 0.48s cubic-bezier(0.16,1,0.3,1);
+  z-index: 0;
+}
+.book-btn-mobile:hover::after { transform: translateY(0); }
+.book-btn-mobile:hover { color: white; }
+.book-btn-mobile:hover::before { border-color: var(--jj-sage); }
+.book-btn-mobile span { position: relative; z-index: 1; }
+
+/* ── GRAIN TEXTURE (premium print feel) ── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ── PORTRAIT VIGNETTE ── */
+.portrait-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(45,52,54,0.55) 0%, transparent 40%),
+    linear-gradient(to bottom, rgba(45,52,54,0.08) 0%, transparent 20%),
+    radial-gradient(ellipse at center, transparent 55%, rgba(45,52,54,0.18) 100%);
+  border-radius: 2px;
+}
+
+/* ── STAT HOVER ── */
+.stat-item {
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.stat-item:hover {
+  transform: translateY(-2px);
+}
+
 /* ── PORTAL BUTTON ── */
 .portal-btn {
   display: inline-flex;

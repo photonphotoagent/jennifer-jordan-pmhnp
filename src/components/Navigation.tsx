@@ -103,6 +103,15 @@ export default function Navigation() {
               style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)" }}
             >
               Jennifer Jordan
+              <span
+                className="inline-block ml-[2px] align-super"
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: "var(--jj-sage)",
+                }}
+              />
             </span>
             <span
               className="text-[0.56rem] tracking-[0.3em] uppercase mt-[3px]"
@@ -177,13 +186,13 @@ export default function Navigation() {
             <div className="absolute top-5 left-6">
               <span
                 className="text-[1.05rem] tracking-tight"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)" }}
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-alabaster)" }}
               >
                 Jennifer Jordan
               </span>
             </div>
             <button className="absolute top-6 right-6" onClick={() => setMenuOpen(false)} aria-label="Close menu">
-              <span className="text-[0.62rem] tracking-[0.22em] uppercase" style={{ color: "var(--jj-stone)" }}>
+              <span className="text-[0.62rem] tracking-[0.22em] uppercase" style={{ color: "rgba(249,248,246,0.45)" }}>
                 Close
               </span>
             </button>
@@ -198,7 +207,7 @@ export default function Navigation() {
                   initial="hidden"
                   animate="visible"
                   className="text-[2.6rem] tracking-tight transition-opacity duration-300 hover:opacity-50"
-                  style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-charcoal)", fontStyle: "italic" }}
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "var(--jj-alabaster)", fontStyle: "italic" }}
                   onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 >
                   {link.label}
@@ -208,7 +217,7 @@ export default function Navigation() {
 
             <motion.a
               href="#contact"
-              className="book-btn mt-2"
+              className="book-btn-mobile mt-2"
               custom={navLinks.length}
               variants={mobileLinkVariants}
               initial="hidden"
